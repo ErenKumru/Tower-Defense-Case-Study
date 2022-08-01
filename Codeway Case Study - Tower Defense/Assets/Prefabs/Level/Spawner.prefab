@@ -81,6 +81,7 @@ MonoBehaviour:
   monstersParent: {fileID: 3315094343491777175}
   initialWaypoint: {fileID: 3175815265611608027}
   spawnCount: 5
+  spawnRate: 0.5
 --- !u!1001 &822873115754986622
 PrefabInstance:
   m_ObjectHideFlags: 0
