@@ -1,18 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<LevelManager>
 {
-    // Start is called before the first frame update
-    void Start()
+    
+    public void StartNewGame()
     {
-        
+        SceneManager.LoadScene(1);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void EndGame()
     {
-        
+        Time.timeScale = 0f;
+        //save game
+        StartCoroutine(HandleGameEnding());
     }
+
+    private IEnumerator HandleGameEnding()
+    {
+        yield return new WaitForSecondsRealtime(2f);
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(0);
+    }
+
+    //private void LoadGame()
+    //{
+    //    
+    //}
+
+    //private void SaveGame()
+    //{
+
+    //}
 }
