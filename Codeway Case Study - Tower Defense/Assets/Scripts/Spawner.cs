@@ -1,32 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Spawner : MonoBehaviour
 {
+    public Action OnMonsterKilled;
+    public Action OnAllMonstersKilled;
+
     [SerializeField] private Monster monsterPrefab;
     [SerializeField] private Transform monstersParent;
     [SerializeField] private Waypoint initialWaypoint;
-    [SerializeField] private int spawnCount;
+    [SerializeField] private int spawnAmount;
     [SerializeField] private float spawnRate;
 
     private List<Monster> monsters = new List<Monster>();
     private int monstersAlive;
 
-    private void Start()
+    public void SpawnMonsters(int stageCount)
     {
-        SpawnMonsters();
-    }
-
-    private void SpawnMonsters()
-    {
+        CalculateSpawnAmount(stageCount);
         StartCoroutine(SpawnFromPool());
-
-        if (spawnCount > monstersAlive)
-        {
-            int spawnAmount = spawnCount - monstersAlive;
-            StartCoroutine(SpawnNew(spawnAmount));
-        }
     }
 
     private IEnumerator SpawnFromPool()
@@ -35,9 +29,16 @@ public class Spawner : MonoBehaviour
         {
             monster.gameObject.SetActive(true);
             monster.transform.position = monstersParent.position;
+            monster.Initialize(initialWaypoint);
             monster.OnMonsterDeath += HandleDeadMonster;
             monstersAlive++;
             yield return new WaitForSeconds(spawnRate);
+        }
+
+        if (spawnAmount > monstersAlive)
+        {
+            int spawnCount = spawnAmount - monstersAlive;
+            StartCoroutine(SpawnNew(spawnCount));
         }
     }
 
@@ -58,8 +59,20 @@ public class Spawner : MonoBehaviour
     {
         if(monster != null)
         {
+            monstersAlive--;
             monster.OnMonsterDeath -= HandleDeadMonster;
             monster.gameObject.SetActive(false);
+            OnMonsterKilled?.Invoke();
+
+            if(monstersAlive <= 0)
+            {
+                OnAllMonstersKilled?.Invoke();
+            }
         }
+    }
+
+    private void CalculateSpawnAmount(int stageCount)
+    {
+        spawnAmount += (stageCount * 2);
     }
 }
