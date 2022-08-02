@@ -149,3 +149,4 @@ MonoBehaviour:
   turretSO: {fileID: 11400000, guid: e7f6588be4202f24b8020c28f1e23c7e, type: 2}
   barrels:
   - {fileID: 6870157644790780343}
+  cost: 25
