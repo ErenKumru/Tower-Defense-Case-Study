@@ -1,43 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Spawner : MonoBehaviour
 {
+    public Action<Monster> OnMonsterKilled;
+    public Action OnAllMonstersKilled;
+
     [SerializeField] private Monster monsterPrefab;
     [SerializeField] private Transform monstersParent;
     [SerializeField] private Waypoint initialWaypoint;
-    [SerializeField] private int spawnCount;
+    [SerializeField] private int spawnAmount;
     [SerializeField] private float spawnRate;
 
     private List<Monster> monsters = new List<Monster>();
-    private int monstersAlive;
+    private int monstersKilled;
 
-    private void Start()
+    public void SpawnMonsters(int stageCount)
     {
-        SpawnMonsters();
-    }
-
-    private void SpawnMonsters()
-    {
+        CalculateSpawnAmount(stageCount);
         StartCoroutine(SpawnFromPool());
-
-        if (spawnCount > monstersAlive)
-        {
-            int spawnAmount = spawnCount - monstersAlive;
-            StartCoroutine(SpawnNew(spawnAmount));
-        }
     }
 
     private IEnumerator SpawnFromPool()
     {
         foreach(Monster monster in monsters)
         {
+            yield return new WaitForSeconds(spawnRate);
             monster.gameObject.SetActive(true);
             monster.transform.position = monstersParent.position;
-            monster.OnMonsterDeath += HandleDeadMonster;
-            monstersAlive++;
-            yield return new WaitForSeconds(spawnRate);
+            monster.Initialize(initialWaypoint);
+            monster.OnMonsterDeath += HandleDeadMonster; 
+        }
+
+        if (spawnAmount > monsters.Count)
+        {
+            int spawnCount = spawnAmount - monsters.Count;
+            StartCoroutine(SpawnNew(spawnCount));
         }
     }
 
@@ -45,12 +45,11 @@ public class Spawner : MonoBehaviour
     {
         for (int i = 0; i < spawnAmount; i++)
         {
+            yield return new WaitForSeconds(spawnRate);
             Monster spawnedMonster = Instantiate(monsterPrefab, monstersParent);
             spawnedMonster.Initialize(initialWaypoint);
             spawnedMonster.OnMonsterDeath += HandleDeadMonster;
             monsters.Add(spawnedMonster);
-            monstersAlive++;
-            yield return new WaitForSeconds(spawnRate);
         }
     }
 
@@ -58,8 +57,21 @@ public class Spawner : MonoBehaviour
     {
         if(monster != null)
         {
+            monstersKilled++;
             monster.OnMonsterDeath -= HandleDeadMonster;
             monster.gameObject.SetActive(false);
+            OnMonsterKilled?.Invoke(monster);
+
+            if(monstersKilled == spawnAmount)
+            {
+                monstersKilled = 0;
+                OnAllMonstersKilled?.Invoke();
+            }
         }
+    }
+
+    private void CalculateSpawnAmount(int stageCount)
+    {
+        spawnAmount += (stageCount * 2);
     }
 }

@@ -9,6 +9,7 @@ public class Monster : MonoBehaviour
 
     [SerializeField] private int health;
     [SerializeField] private float moveSpeed;
+    [SerializeField] private int coinsValue;
     private Waypoint currentWayPoint;
     private Vector2 targetWayPointPosition;
 
@@ -50,5 +51,10 @@ public class Monster : MonoBehaviour
             health = 100;
             OnMonsterDeath?.Invoke(this);
         }
+    }
+
+    public int GetCoinsValue()
+    {
+        return coinsValue;
     }
 }
