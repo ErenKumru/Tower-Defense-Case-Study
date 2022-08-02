@@ -26,7 +26,7 @@ public class LevelManager : MonoBehaviour
 
     private void Initialize()
     {
-        gameManager = FindObjectOfType<GameManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         UIManager = FindObjectOfType<UIManager>();
         gameOverController = FindObjectOfType<GameOverController>();
         turretBuilder = FindObjectOfType<TurretBuilder>();

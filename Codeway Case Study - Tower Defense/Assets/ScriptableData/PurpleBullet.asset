@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adace5d166cbe6d4b9427ea4a0979aac, type: 3}
+  m_Name: PurpleBullet
+  m_EditorClassIdentifier: 
+  bulletSprite: {fileID: 21300000, guid: abf02e1ef1c144043825af848db0abf5, type: 3}
+  damage: 100
+  speed: 4
