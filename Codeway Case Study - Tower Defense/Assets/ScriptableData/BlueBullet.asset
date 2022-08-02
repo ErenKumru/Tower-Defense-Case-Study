@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletSprite: {fileID: 21300000, guid: fd5d614237c21eb4d9db2c82408a6c33, type: 3}
   damage: 25
-  speed: 5
+  speed: 8

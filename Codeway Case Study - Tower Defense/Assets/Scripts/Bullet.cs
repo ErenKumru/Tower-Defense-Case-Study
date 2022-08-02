@@ -47,7 +47,7 @@ public class Bullet : MonoBehaviour
         }
 
         //Fizzle Shot: if no target to hit at target position = targeted monster is already dead -> reach target position and fizzle out
-        if(!isHit) OnTargetReached?.Invoke(this);
+        if(!isHit || !targetMonster.isActiveAndEnabled) OnTargetReached?.Invoke(this);
     }
 
     private void OnTriggerEnter2D(Collider2D otherCollider)
