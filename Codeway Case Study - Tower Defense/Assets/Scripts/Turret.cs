@@ -6,11 +6,13 @@ public class Turret : MonoBehaviour
 {
     [SerializeField] private TurretSO turretSO;
     [SerializeField] private Transform[] barrels;
+    [SerializeField] private int cost;
 
     private Sprite turretSprite;
     private Bullet bulletPrefab;
     private float shootingRate;
     private float rotationSpeed;
+    
 
     private Queue<Bullet> bulletPool = new Queue<Bullet>();
 
@@ -30,6 +32,7 @@ public class Turret : MonoBehaviour
         bulletPrefab = turretSO.bulletPrefab;
         shootingRate = turretSO.shootingRate;
         rotationSpeed = turretSO.shootingRate;
+        cost = turretSO.cost;
     }
 
     private void StartShooting()
@@ -121,5 +124,10 @@ public class Turret : MonoBehaviour
     private bool BulletAvailable()
     {
         return bulletPool.Count > 0;
+    }
+
+    public int GetCost()
+    {
+        return cost;
     }
 }

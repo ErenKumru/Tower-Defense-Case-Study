@@ -9,4 +9,5 @@ public class TurretSO : ScriptableObject
     public Bullet bulletPrefab;
     public float shootingRate;
     public float rotationSpeed;
+    public int cost;
 }

@@ -16,3 +16,4 @@ MonoBehaviour:
   bulletPrefab: {fileID: 2665531978841620159, guid: ea4239788dfcd5044a427543a8e603c5, type: 3}
   shootingRate: 1
   rotationSpeed: 5
+  cost: 25
