@@ -9,8 +9,6 @@ public class TurretBuilder : MonoBehaviour
     [SerializeField] private Transform parentTurretTiles;
     private List<Transform> turretTiles;
 
-    private LevelManager levelManager;
-
     private void OnEnable()
     {
         Initialize();
@@ -19,8 +17,6 @@ public class TurretBuilder : MonoBehaviour
     private void Initialize()
     {
         GetTurretTiles();
-        levelManager = FindObjectOfType<LevelManager>();
-        levelManager.OnBuildTurret += Build;
     }
 
     private void GetTurretTiles()
@@ -29,7 +25,7 @@ public class TurretBuilder : MonoBehaviour
         turretTiles.Remove(parentTurretTiles);
     }
 
-    public void Build(Turret turret)
+    public bool Build(Turret turret)
     {
         if(TilesAvailable())
         {
@@ -37,11 +33,10 @@ public class TurretBuilder : MonoBehaviour
             Vector2 buildPosition = turretTiles[randomIndex].transform.position;
             Turret newTurret = Instantiate(turret, buildPosition, Quaternion.identity, turretsParent);
             turretTiles.RemoveAt(randomIndex);
+            return true;
         }
-        else
-        {
-            levelManager.SendMessageToUI("Not Enough Space! Can Not Build More Turrets!");
-        }
+
+        return false;
     }
 
     private bool TilesAvailable()
