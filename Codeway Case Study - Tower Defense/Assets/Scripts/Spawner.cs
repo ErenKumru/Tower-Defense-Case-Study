@@ -5,7 +5,7 @@ using System;
 
 public class Spawner : MonoBehaviour
 {
-    public Action OnMonsterKilled;
+    public Action<Monster> OnMonsterKilled;
     public Action OnAllMonstersKilled;
 
     [SerializeField] private Monster monsterPrefab;
@@ -15,7 +15,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private float spawnRate;
 
     private List<Monster> monsters = new List<Monster>();
-    private int monstersAlive;
+    private int monstersKilled;
 
     public void SpawnMonsters(int stageCount)
     {
@@ -27,17 +27,16 @@ public class Spawner : MonoBehaviour
     {
         foreach(Monster monster in monsters)
         {
+            yield return new WaitForSeconds(spawnRate);
             monster.gameObject.SetActive(true);
             monster.transform.position = monstersParent.position;
             monster.Initialize(initialWaypoint);
-            monster.OnMonsterDeath += HandleDeadMonster;
-            monstersAlive++;
-            yield return new WaitForSeconds(spawnRate);
+            monster.OnMonsterDeath += HandleDeadMonster; 
         }
 
-        if (spawnAmount > monstersAlive)
+        if (spawnAmount > monsters.Count)
         {
-            int spawnCount = spawnAmount - monstersAlive;
+            int spawnCount = spawnAmount - monsters.Count;
             StartCoroutine(SpawnNew(spawnCount));
         }
     }
@@ -46,12 +45,11 @@ public class Spawner : MonoBehaviour
     {
         for (int i = 0; i < spawnAmount; i++)
         {
+            yield return new WaitForSeconds(spawnRate);
             Monster spawnedMonster = Instantiate(monsterPrefab, monstersParent);
             spawnedMonster.Initialize(initialWaypoint);
             spawnedMonster.OnMonsterDeath += HandleDeadMonster;
             monsters.Add(spawnedMonster);
-            monstersAlive++;
-            yield return new WaitForSeconds(spawnRate);
         }
     }
 
@@ -59,13 +57,14 @@ public class Spawner : MonoBehaviour
     {
         if(monster != null)
         {
-            monstersAlive--;
+            monstersKilled++;
             monster.OnMonsterDeath -= HandleDeadMonster;
             monster.gameObject.SetActive(false);
-            OnMonsterKilled?.Invoke();
+            OnMonsterKilled?.Invoke(monster);
 
-            if(monstersAlive <= 0)
+            if(monstersKilled == spawnAmount)
             {
+                monstersKilled = 0;
                 OnAllMonstersKilled?.Invoke();
             }
         }
