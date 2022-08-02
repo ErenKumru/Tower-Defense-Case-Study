@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text killCountText;
     [SerializeField] private TMP_Text coinsText;
     [SerializeField] private TMP_Text messageText;
+    [SerializeField] private GameObject messagePanel;
 
     public void UpdateStageText(int stageCount)
     {
@@ -33,8 +34,8 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator FlashMessage()
     {
-        messageText.enabled = true;
-        yield return new WaitForSeconds(1f);
-        messageText.enabled = false;
+        messagePanel.SetActive(true);
+        yield return new WaitForSeconds(1.25f);
+        messagePanel.SetActive(false);
     }
 }
