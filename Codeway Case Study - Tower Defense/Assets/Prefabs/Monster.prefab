@@ -158,5 +158,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
-  moveSpeed: 1
-  coinsValue: 5
+  moveSpeed: 0.6
+  coinsValue: 10
