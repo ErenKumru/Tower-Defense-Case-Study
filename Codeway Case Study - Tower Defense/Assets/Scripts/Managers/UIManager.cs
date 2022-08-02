@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text coinsText;
     [SerializeField] private TMP_Text messageText;
     [SerializeField] private GameObject messagePanel;
+    [SerializeField] private GameObject gameOverPanel;
 
     public void UpdateStageText(int stageCount)
     {
@@ -28,8 +29,11 @@ public class UIManager : MonoBehaviour
 
     public void ShowMessage(string message)
     {
-        messageText.text = message;
-        StartCoroutine(FlashMessage());
+        if(!messagePanel.activeInHierarchy)
+        {
+            messageText.text = message;
+            StartCoroutine(FlashMessage());
+        }
     }
 
     private IEnumerator FlashMessage()
@@ -37,5 +41,10 @@ public class UIManager : MonoBehaviour
         messagePanel.SetActive(true);
         yield return new WaitForSeconds(1.25f);
         messagePanel.SetActive(false);
+    }
+
+    public void ShowEndGameText()
+    {
+        gameOverPanel.SetActive(true);
     }
 }

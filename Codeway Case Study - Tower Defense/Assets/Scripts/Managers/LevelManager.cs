@@ -9,7 +9,9 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] private int startingCoin;
 
+    private GameManager gameManager;
     private UIManager UIManager;
+    private GameOverController gameOverController;
     private TurretBuilder turretBuilder;
     private Spawner spawner;
 
@@ -19,9 +21,18 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        gameManager = FindObjectOfType<GameManager>();
         UIManager = FindObjectOfType<UIManager>();
+        gameOverController = FindObjectOfType<GameOverController>();
         turretBuilder = FindObjectOfType<TurretBuilder>();
         spawner = FindObjectOfType<Spawner>();
+
+        gameOverController.OnLevelEndTriggered += EndGame;
         spawner.OnMonsterKilled += IncreaseKillCount;
         spawner.OnAllMonstersKilled += StartNextStage;
 
@@ -81,6 +92,12 @@ public class LevelManager : MonoBehaviour
         coins += monster.GetCoinsValue();
         UIManager.UpdateKillCountText(totalMonstersKilled);
         UIManager.UpdateCoinsText(coins);
+    }
+
+    private void EndGame()
+    {
+        UIManager.ShowEndGameText();
+        gameManager.EndGame();
     }
 
     public void SendMessageToUI(String message)
