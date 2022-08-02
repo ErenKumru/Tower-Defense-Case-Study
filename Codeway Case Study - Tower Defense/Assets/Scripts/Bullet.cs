@@ -62,6 +62,11 @@ public class Bullet : MonoBehaviour
         }
     }
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        isHit = false;
+    }
+
     private void TrackTarget()
     {
         targetPosition = targetMonster.transform.position;
