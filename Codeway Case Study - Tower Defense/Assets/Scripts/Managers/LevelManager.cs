@@ -26,6 +26,10 @@ public class LevelManager : MonoBehaviour
         spawner.OnAllMonstersKilled += StartNextStage;
 
         coins = startingCoin;
+
+        UIManager.UpdateStageText(stageCount);
+        UIManager.UpdateCoinsText(coins);
+        UIManager.UpdateKillCountText(totalMonstersKilled);
     }
 
     private void Start()
@@ -42,7 +46,7 @@ public class LevelManager : MonoBehaviour
             if (buildSuccessful)
             {
                 coins -= turret.GetCost();
-                //update coins on UI
+                UIManager.UpdateCoinsText(coins);
             }
             else SendMessageToUI("Not Enough Space! Can Not Build More Turrets!");
         }
@@ -52,7 +56,7 @@ public class LevelManager : MonoBehaviour
     private void StartNextStage()
     {
         stageCount++;
-        //update stage count on UI
+        UIManager.UpdateStageText(stageCount);
 
         //start save (if you can)
 
@@ -65,6 +69,7 @@ public class LevelManager : MonoBehaviour
     {
         //wait for 1 seconds before next stage
         //can update UI and notify player here
+        SendMessageToUI("Stage " + stageCount);
         yield return new WaitForSeconds(1f);
 
         //do things for next stage
@@ -74,11 +79,12 @@ public class LevelManager : MonoBehaviour
     {
         totalMonstersKilled++;
         coins += monster.GetCoinsValue();
-        //update kill count on UI
+        UIManager.UpdateKillCountText(totalMonstersKilled);
+        UIManager.UpdateCoinsText(coins);
     }
 
     public void SendMessageToUI(String message)
     {
-        //invoke event to UIManager show message
+        UIManager.ShowMessage(message);
     }
 }
