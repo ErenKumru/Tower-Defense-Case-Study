@@ -82,6 +82,11 @@ public class Turret : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f, 0f, rotationZ);
     }
 
+    /*
+     * Spawns Bullet using Object Pooling:
+     *      fires bullet from pool if there is a bullet available in bullet pool
+     *      otherwise Instantiates new bullet, add it to the bullet pool and fires it
+     */
     private void SpawnBullet(Transform barrel)
     {
         if (BulletAvailable())
@@ -101,6 +106,7 @@ public class Turret : MonoBehaviour
         }
     }
 
+    //Collects bullet to add bullet pool
     private void CollectBullet(Bullet bulletToCollect)
     {
         if (bulletToCollect != null)
@@ -111,6 +117,7 @@ public class Turret : MonoBehaviour
         }
     }
 
+    //Add monster to the monsters list and start shooting
     private void OnTriggerEnter2D(Collider2D otherCollider)
     {
         Monster monsterEntered = otherCollider.GetComponent<Monster>();
@@ -118,6 +125,7 @@ public class Turret : MonoBehaviour
         StartShooting();
     }
 
+    //Remove monster from the monsters list
     private void OnTriggerExit2D(Collider2D otherCollider)
     {
         Monster monsterExited = otherCollider.GetComponent<Monster>();

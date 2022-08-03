@@ -69,7 +69,7 @@ public class LevelManager : MonoBehaviour
         stageCount++;
         UIManager.UpdateStageText(stageCount);
 
-        //start save (if you can)
+        //start save
 
         StartCoroutine(SetNextStage());
 
@@ -83,7 +83,7 @@ public class LevelManager : MonoBehaviour
         SendMessageToUI("Stage " + stageCount);
         yield return new WaitForSeconds(1f);
 
-        //do things for next stage
+        //do things for next stage if necessary
     }
 
     private void IncreaseKillCount(Monster monster)

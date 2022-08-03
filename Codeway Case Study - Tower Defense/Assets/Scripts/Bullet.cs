@@ -46,7 +46,7 @@ public class Bullet : MonoBehaviour
             yield return null;
         }
 
-        //Fizzle Shot: if no target to hit at target position = targeted monster is already dead -> reach target position and fizzle out
+        //Fizzle Shot: if no target to hit at target position or targeted monster is already dead -> reach target position and fizzle out
         if(!isHit || !targetMonster.isActiveAndEnabled) OnTargetReached?.Invoke(this);
     }
 
@@ -54,7 +54,8 @@ public class Bullet : MonoBehaviour
     {
         Monster monster = otherCollider.GetComponent<Monster>();
 
-        if(monster != null && monster == targetMonster)
+        //Hit the targetMonster
+        if (monster != null && monster == targetMonster)
         {
             isHit = true;
             targetMonster.GetDamaged(damage);
