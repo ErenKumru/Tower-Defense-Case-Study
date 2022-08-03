@@ -31,8 +31,16 @@ public class Turret : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = turretSprite;
         bulletPrefab = turretSO.bulletPrefab;
         shootingRate = turretSO.shootingRate;
-        rotationSpeed = turretSO.shootingRate;
+        rotationSpeed = turretSO.rotationSpeed;
         cost = turretSO.cost;
+    }
+
+    private void Update()
+    {
+        if(isAlreadyShooting)
+        {
+            LockOnTarget();
+        }
     }
 
     private void StartShooting()
@@ -52,8 +60,6 @@ public class Turret : MonoBehaviour
 
             if (targetMonster != null)
             {
-                //lock to targetMonster and wait for locking to complete then start shooting
-
                 foreach (Transform barrel in barrels)
                 {
                     SpawnBullet(barrel);
@@ -65,7 +71,17 @@ public class Turret : MonoBehaviour
 
         isAlreadyShooting = false;
     }
-    
+
+    private void LockOnTarget()
+    {
+        Vector3 direction = targetMonster.transform.position - transform.position;
+        direction.Normalize();
+
+        float rotationZ = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        rotationZ -= 90f;
+        transform.rotation = Quaternion.Euler(0f, 0f, rotationZ);
+    }
+
     private void SpawnBullet(Transform barrel)
     {
         if (BulletAvailable())
@@ -99,7 +115,6 @@ public class Turret : MonoBehaviour
     {
         Monster monsterEntered = otherCollider.GetComponent<Monster>();
         monsters.Add(monsterEntered);
-        //listen monster
         StartShooting();
     }
 
@@ -107,7 +122,6 @@ public class Turret : MonoBehaviour
     {
         Monster monsterExited = otherCollider.GetComponent<Monster>();
         monsters.Remove(monsterExited);
-        //stop listening to monster
     }
 
     private Monster TargetMonsterInFront()
