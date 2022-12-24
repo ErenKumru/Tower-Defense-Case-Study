@@ -5,7 +5,7 @@
 
 ## Game Design
 - Turrets are put randomly on available tiles when bought.
-- At each Stage, there are more Monsters defense against.
+- At each Stage, there are more Monsters to defend against.
 - Game continues until a Monster reaches the end of the path.
 
 ## Assets
