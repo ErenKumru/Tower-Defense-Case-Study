@@ -8,3 +8,4 @@
 - Coins and Kill UI assets: https://assetstore.unity.com/packages/2d/environments/free-game-items-131764
 - Map tiles assets: https://kenney.nl/assets/tower-defense-top-down
 
+https://user-images.githubusercontent.com/44412775/209445490-0a723c2e-3f11-4b83-8f3e-d3d629815ddb.mp4
