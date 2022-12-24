@@ -1,5 +1,5 @@
 ## About
-- A simple tower defense game case study to understand the fundementals of tower defense games and achieve a simple mini-game.
+- A 2D simple tower defense game case study to understand the fundementals of tower defense games and achieve a simple mini-game.
 - I already had some turret and spaceship assets beforehand from another project so I decided that the game's theme to be space defense.
 - The project was worked on 1440 x 3200 Portrait.
 
